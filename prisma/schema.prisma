@@ -8,20 +8,22 @@ generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
-
+// Define o banco de dados PostgreSQL como fonte de dados
 datasource db {
   provider = "postgresql"
 }
 
+// Define o modelo de Usuário, tipando os campos e suas propriedades
 model User {
   id       String   @id @default(uuid())
   name     String
   email    String   @unique
   password String
-  // Relations, a user can have many meals
+  // Relacionamento com refeições. Um usuario pode ter muitas refeições
   meals Meal[]
 }
 
+// Define o modelo de Refeição, tipando os campos e suas propriedades
 model Meal {
   id          String   @id @default(uuid())
   userId      String
@@ -33,6 +35,7 @@ model Meal {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Relacionamento com usuário. Muitas refeições pertencem a um usuário
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
